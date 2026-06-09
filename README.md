@@ -116,3 +116,19 @@ npm run dev
 | Like/Comment | ✅ | ✅ | ✅ | ❌ |
 | Download | ✅ | ✅ | ✅ | ✅ |
 | Manage Roles | ✅ | ❌ | ❌ | ❌ |
+
+## 🏛️ Multi-Club Deployment Model
+
+This platform is designed to be deployed independently by each club:
+
+- Each club gets their own deployment (Vercel), database (Supabase), and storage (Cloudinary)
+- Complete data isolation between clubs
+- The first user to sign up automatically becomes the Admin
+- Admin then assigns roles to photographers and members
+- Any club can deploy their own instance in under 30 minutes using this repository
+
+### Planned Enhancement
+A future version will support multi-club architecture where:
+- Clubs register on a central platform
+- Each club gets an isolated workspace
+- Super-admin manages all clubs from one dashboard
