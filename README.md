@@ -2,10 +2,10 @@
 
 A centralized Event & Media Management Platform for clubs and societies to upload, organize, access, and interact with media content seamlessly.
 
-## 🔗 Live Demo
+##  Live Demo
 https://cig-media-platform-pi.vercel.app/
 
-## 🚀 Features
+##  Features
 
 ### Core Features
 - **Event Management** — Create and manage events with categories, dates, and descriptions. Sort by name, date, or category.
@@ -28,7 +28,7 @@ https://cig-media-platform-pi.vercel.app/
 - **QR Code Sharing** — Each album has a QR code for instant sharing.
 - **Admin Panel** — Manage user roles from a dedicated admin interface.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -42,7 +42,7 @@ https://cig-media-platform-pi.vercel.app/
 | Styling | Tailwind CSS |
 | Deployment | Vercel |
 
-## 📁 Project Structure
+##  Project Structure
 cig-media-platform/
 ├── app/
 │   ├── admin/              # Admin panel for role management
@@ -66,7 +66,7 @@ cig-media-platform/
 └── public/
 └── models/             # face-api.js ML models
 
-## 🗄️ Database Schema
+##  Database Schema
 
 - **profiles** — User profiles with roles (admin, photographer, member, viewer)
 - **events** — Club events with metadata
@@ -77,7 +77,7 @@ cig-media-platform/
 - **favourites** — Saved photos
 - **notifications** — Real-time user notifications
 
-## ⚙️ Setup & Installation
+##  Setup & Installation
 
 ### Prerequisites
 - Node.js v18+
@@ -106,7 +106,7 @@ npm install
 npm run dev
 ```
 
-## 👥 Roles & Permissions
+##  Roles & Permissions
 
 | Action | Admin | Photographer | Member | Viewer |
 |---|---|---|---|---|
@@ -117,7 +117,7 @@ npm run dev
 | Download | ✅ | ✅ | ✅ | ✅ |
 | Manage Roles | ✅ | ❌ | ❌ | ❌ |
 
-## 🏛️ Multi-Club Deployment Model
+##  Multi-Club Deployment Model
 
 This platform is designed to be deployed independently by each club:
 
