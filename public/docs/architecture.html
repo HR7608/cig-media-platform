@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CIG Media Platform - Architecture</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0f172a; color: white; font-family: Arial, sans-serif; padding: 40px; }
+    h1 { text-align: center; font-size: 24px; margin-bottom: 40px; color: #60a5fa; }
+    .diagram { display: flex; flex-direction: column; gap: 30px; max-width: 900px; margin: 0 auto; }
+    .layer { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; }
+    .layer-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; margin-bottom: 16px; }
+    .boxes { display: flex; gap: 12px; flex-wrap: wrap; }
+    .box { padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; }
+    .blue { background: #1d4ed8; }
+    .green { background: #15803d; }
+    .purple { background: #7e22ce; }
+    .orange { background: #c2410c; }
+    .pink { background: #be185d; }
+    .arrow { text-align: center; color: #475569; font-size: 20px; }
+  </style>
+</head>
+<body>
+  <h1>CIG Media Platform — Architecture</h1>
+  <div class="diagram">
+
+    <div class="layer">
+      <div class="layer-title">👤 Client (Browser)</div>
+      <div class="boxes">
+        <div class="box blue">Next.js 16 App Router</div>
+        <div class="box blue">Tailwind CSS</div>
+        <div class="box blue">face-api.js (Face Recognition)</div>
+        <div class="box blue">TensorFlow.js (Auto-tagging)</div>
+        <div class="box blue">qrcode.react (QR Sharing)</div>
+      </div>
+    </div>
+
+    <div class="arrow">↕</div>
+
+    <div class="layer">
+      <div class="layer-title">⚙️ Backend (Next.js API Routes)</div>
+      <div class="boxes">
+        <div class="box purple">POST /api/upload</div>
+        <div class="box purple">Cloudinary SDK</div>
+        <div class="box purple">Supabase Admin Client</div>
+      </div>
+    </div>
+
+    <div class="arrow">↕</div>
+
+    <div class="layer">
+      <div class="layer-title">🗄️ Database & Auth (Supabase)</div>
+      <div class="boxes">
+        <div class="box green">PostgreSQL Database</div>
+        <div class="box green">Row Level Security</div>
+        <div class="box green">Supabase Auth</div>
+        <div class="box green">Realtime Subscriptions</div>
+      </div>
+    </div>
+
+    <div class="arrow">↕</div>
+
+    <div class="layer">
+      <div class="layer-title">☁️ Cloud Storage (Cloudinary)</div>
+      <div class="boxes">
+        <div class="box orange">Image & Video Storage</div>
+        <div class="box orange">Auto Compression</div>
+        <div class="box orange">Thumbnail Generation</div>
+        <div class="box orange">Watermark Transformations</div>
+      </div>
+    </div>
+
+    <div class="arrow">↕</div>
+
+    <div class="layer">
+      <div class="layer-title">🚀 Deployment (Vercel)</div>
+      <div class="boxes">
+        <div class="box pink">Auto Deploy from GitHub</div>
+        <div class="box pink">Edge Network CDN</div>
+        <div class="box pink">Environment Variables</div>
+        <div class="box pink">Production & Preview URLs</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
