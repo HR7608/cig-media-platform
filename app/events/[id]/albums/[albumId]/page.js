@@ -3,6 +3,7 @@ import { useEffect, useState, use, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { QRCodeSVG } from 'qrcode.react'
 
 export default function AlbumPage({ params }) {
   const { id, albumId } = use(params)
@@ -66,6 +67,11 @@ export default function AlbumPage({ params }) {
         continue
       }
 
+      // Auto-tag the image
+      setUploadProgress(`Tagging photo ${i + 1} of ${files.length}...`)
+      const { generateTags } = await import('@/lib/autoTag')
+      const tags = await generateTags(data.url)
+
       await supabase.from('media').insert({
         album_id: albumId,
         event_id: id,
@@ -73,7 +79,7 @@ export default function AlbumPage({ params }) {
         url: data.url,
         thumbnail_url: data.thumbnail_url,
         public_id: data.public_id,
-        tags: data.tags,
+        tags: tags,
         media_type: file.type.startsWith('video') ? 'video' : 'image',
         is_public: album.is_public
       })
@@ -133,6 +139,28 @@ export default function AlbumPage({ params }) {
             </p>
           </div>
         </div>
+                  {/* QR Code Share */}
+          <div className="bg-gray-900 rounded-xl p-6 mb-8 flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Share this Album</h2>
+              <p className="text-gray-400 text-sm mt-1">Scan the QR code to open this album</p>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href)
+                  alert('Link copied to clipboard!')
+                }}
+                className="mt-3 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm"
+              >
+                 Copy Link
+              </button>
+            </div>
+            <div className="bg-white p-3 rounded-xl">
+              <QRCodeSVG
+                value={typeof window !== 'undefined' ? window.location.href : ''}
+                size={120}
+              />
+            </div>
+          </div>
 
         {/* Upload Area */}
         {user && (
@@ -186,7 +214,6 @@ export default function AlbumPage({ params }) {
                   ) : (
                     <img src={item.thumbnail_url || item.url} alt="" className="w-full h-full object-cover" />
                   )}
-                  {/* Tags overlay */}
                   {item.tags && item.tags.length > 0 && (
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2 opacity-0 group-hover:opacity-100 transition">
                       <div className="flex flex-wrap gap-1">
