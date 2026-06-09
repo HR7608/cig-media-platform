@@ -3,27 +3,21 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
+import { useProfile } from '@/lib/useProfile'
 
 export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
   const [user, setUser] = useState(null)
-  const [profile, setProfile] = useState(null)
   const [notifications, setNotifications] = useState([])
   const [showNotifications, setShowNotifications] = useState(false)
+  const { profile, isAdmin } = useProfile()
 
   useEffect(() => {
     const init = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       setUser(user)
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single()
-      setProfile(profile)
 
       const { data: notifs } = await supabase
         .from('notifications')
@@ -66,7 +60,6 @@ export default function Navbar() {
     setShowNotifications(false)
   }
 
-  // Hide navbar on landing, login, signup pages
   if (['/', '/login', '/signup'].includes(pathname)) return null
   if (!user) return null
 
@@ -121,6 +114,16 @@ export default function Navbar() {
           >
             Find Me
           </Link>
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className={`px-3 py-2 rounded-lg text-sm transition ${
+                pathname === '/admin' ? 'bg-gray-700 text-white' : 'text-red-400 hover:text-white hover:bg-gray-800'
+              }`}
+            >
+              Admin
+            </Link>
+          )}
         </div>
 
         {/* Right side */}

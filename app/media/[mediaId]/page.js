@@ -2,6 +2,7 @@
 import { useEffect, useState, use } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import { useProfile } from '@/lib/useProfile'
 
 export default function MediaPage({ params }) {
   const { mediaId } = use(params)
@@ -14,6 +15,7 @@ export default function MediaPage({ params }) {
   const [liked, setLiked] = useState(false)
   const [favourited, setFavourited] = useState(false)
   const [loading, setLoading] = useState(true)
+  const { canInteract } = useProfile()
 
   useEffect(() => {
     const init = async () => {
@@ -76,7 +78,6 @@ export default function MediaPage({ params }) {
       await supabase.from('likes').insert({ media_id: mediaId, user_id: user.id })
       setLikes(prev => [...prev, { user_id: user.id }])
       setLiked(true)
-      // Create notification
       if (media.uploaded_by !== user.id) {
         await supabase.from('notifications').insert({
           user_id: media.uploaded_by,
@@ -113,7 +114,6 @@ export default function MediaPage({ params }) {
     setComments(prev => [...prev, data])
     setComment('')
 
-    // Create notification
     if (media.uploaded_by !== user.id) {
       await supabase.from('notifications').insert({
         user_id: media.uploaded_by,
@@ -126,22 +126,22 @@ export default function MediaPage({ params }) {
   }
 
   const handleDownload = async () => {
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-  const publicId = media.public_id
-  const watermarkedUrl = `https://res.cloudinary.com/${cloudName}/image/upload/l_text:Arial_30_bold:CIG%20Media,co_white,o_60,g_south_east,x_10,y_10/${publicId}`
-  
-  const response = await fetch(watermarkedUrl)
-  const blob = await response.blob()
-  const blobUrl = URL.createObjectURL(blob)
-  
-  const link = document.createElement('a')
-  link.href = blobUrl
-  link.download = `cig-media-${mediaId}.jpg`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(blobUrl)
-}
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+    const publicId = media.public_id
+    const watermarkedUrl = `https://res.cloudinary.com/${cloudName}/image/upload/l_text:Arial_30_bold:CIG%20Media,co_white,o_60,g_south_east,x_10,y_10/${publicId}`
+
+    const response = await fetch(watermarkedUrl)
+    const blob = await response.blob()
+    const blobUrl = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = blobUrl
+    link.download = `cig-media-${mediaId}.jpg`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(blobUrl)
+  }
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href)
@@ -164,7 +164,6 @@ export default function MediaPage({ params }) {
     <main className="min-h-screen bg-gray-950 text-white">
       <div className="max-w-6xl mx-auto p-8">
 
-        {/* Back button */}
         <button
           onClick={() => router.back()}
           className="text-gray-400 hover:text-white mb-6 flex items-center gap-2 text-sm"
@@ -197,9 +196,13 @@ export default function MediaPage({ params }) {
 
             {/* Actions */}
             <div className="bg-gray-900 rounded-xl p-4 flex flex-col gap-3">
+              {!canInteract && (
+                <p className="text-yellow-400 text-xs">Sign in as a member to interact with photos</p>
+              )}
               <button
                 onClick={handleLike}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
+                disabled={!canInteract}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition disabled:opacity-50 ${
                   liked ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-800 hover:bg-gray-700'
                 }`}
               >
@@ -207,7 +210,8 @@ export default function MediaPage({ params }) {
               </button>
               <button
                 onClick={handleFavourite}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
+                disabled={!canInteract}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition disabled:opacity-50 ${
                   favourited ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-gray-800 hover:bg-gray-700'
                 }`}
               >
@@ -259,7 +263,7 @@ export default function MediaPage({ params }) {
                   ))
                 )}
               </div>
-              {user && (
+              {user && canInteract && (
                 <div className="flex gap-2 mt-2">
                   <input
                     type="text"
