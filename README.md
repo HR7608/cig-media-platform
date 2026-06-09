@@ -3,7 +3,7 @@
 A centralized Event & Media Management Platform for clubs and societies to upload, organize, access, and interact with media content seamlessly.
 
 ## 🔗 Live Demo
-[https://cig-media-platform-fae8l8xbd-hr7608s-projects.vercel.app](https://cig-media-platform-fae8l8xbd-hr7608s-projects.vercel.app)
+https://cig-media-platform-pi.vercel.app/
 
 ## 🚀 Features
 
